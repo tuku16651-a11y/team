@@ -1,12 +1,13 @@
 /* =============================================
-   SUSHI KATANA — APP.JS
+   TEAMANIA CAFE & LOUNGE — APP.JS
    ============================================= */
 
 'use strict';
 
 // ─── Constants ───────────────────────────────
 const WA_NUMBER = '994559406018';
-const PAGE_SCROLL_MAP = {};   // page -> scrollY before leaving
+const MENU_IMG = 'images/menu-item.jpg';
+const PAGE_SCROLL_MAP = {};
 let currentPage = 'home';
 let currentModalProduct = null;
 let currentVacancy = null;
@@ -15,262 +16,217 @@ let cart = [];
 // ─── DATA ─────────────────────────────────────
 
 const menuData = {
-  sets: [
+  fastfood: [
     {
-      id: 's1',
-      name: 'Set N1 — Super Təklif',
-      desc: '70 əd. müxtəlif suşi + 1L Coca-Cola pulsuz! Böyük yığıncaqlar üçün ideal seçim.',
-      price: 29,
-      weight: '70 əd. + 1L Cola',
-      img: 'images/set-n1.jpg',
-      badge: 'Super Təklif'
-    },
-    {
-      id: 's2',
-      name: 'Set N3',
-      desc: '30 əd. müxtəlif suşi — California, Philadelphia, Hot Crab, Hot Salmon, Baked, Maki daxildir.',
-      price: 19,
-      weight: '30 əd.',
-      img: 'images/set-n3.jpg',
+      id: 'ff1',
+      name: 'Toyuq Şaurma Seti',
+      desc: 'Toyuq şaurma (2 ədəd), kartof fri (2 ədəd), kola (2 ədəd), ayran (2 ədəd) və ya Sandora (1 litr)',
+      price: 18,
+      weight: '2 ədəd şaurma',
+      img: MENU_IMG,
       badge: 'Populyar'
     },
     {
-      id: 's3',
-      name: 'Sushi Premium Set',
-      desc: 'Klassik Nigiri, Maki, California Roll — hər şey bir yerdə. Suşi sevənlər üçün ideal set.',
-      price: 29,
-      weight: '6 növ, hər birindən',
-      img: 'images/menu-hero.jpg',
-      badge: 'Klassik'
+      id: 'ff2',
+      name: 'Sezar Rol Seti',
+      desc: 'Sezar rol (2 ədəd), kartof fri (2 ədəd), kola (2 ədəd), ayran (2 ədəd) və ya Sandora (2 litr)',
+      price: 18,
+      weight: '2 ədəd rol',
+      img: MENU_IMG
+    },
+    {
+      id: 'ff3',
+      name: 'Ət Burger Seti',
+      desc: 'Ət burger (2 ədəd), kartof fri (2 ədəd), kola (2 ədəd), ayran (2 ədəd) və ya Sandora (1 litr)',
+      price: 28,
+      weight: '2 ədəd burger',
+      img: MENU_IMG,
+      badge: 'Premium'
+    },
+    {
+      id: 'ff4',
+      name: 'Ət Şaurma Seti',
+      desc: 'Ət şaurma (2 ədəd), kartof fri (2 ədəd), kola (2 ədəd), ayran (2 ədəd) və ya Sandora (1 litr)',
+      price: 22,
+      weight: '2 ədəd şaurma',
+      img: MENU_IMG
+    },
+    {
+      id: 'ff5',
+      name: 'Toyuq Burger Seti',
+      desc: 'Toyuq burger (2 ədəd), kartof fri (2 ədəd), kola (2 ədəd), ayran (2 ədəd) və ya Sandora (1 litr)',
+      price: 22,
+      weight: '2 ədəd burger',
+      img: MENU_IMG
     }
   ],
-  rolls: [
+  teasets: [
     {
-      id: 'r1',
-      name: 'California Roll',
-      desc: 'Krab əti, avokado, salatalıq, tobiko kürüsü ilə hazırlanmış klassik uramaki roll.',
-      price: 8,
-      weight: '8 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts1',
+      name: 'Çay Seti — Mürəbbəli',
+      desc: 'Çay, mürəbbə, rulet',
+      price: 18,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'r2',
-      name: 'Philadelphia Roll',
-      desc: 'Krem pendir, somon, avokado ilə hazırlanmış zəngin dadlı uramaki roll.',
-      price: 9,
-      weight: '8 əd.',
-      img: 'images/gallery1.jpg'
+      id: 'ts2',
+      name: 'Çay Seti — Şokoladlı',
+      desc: 'Çay, mürəbbə, şokolad',
+      price: 18,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'r3',
-      name: 'Hot Crab Roll',
-      desc: 'İsti qızardılmış krab içlikli, xüsusi Katana sousu ilə servis edilən roll.',
-      price: 8,
-      weight: '8 əd.',
-      img: 'images/set-n3.jpg'
+      id: 'ts3',
+      name: 'Çay Seti — Südlü Paxlava',
+      desc: 'Çay, südlü paxlava, şokolad',
+      price: 19,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'r4',
-      name: 'Hot Salmon Roll',
-      desc: 'Qızardılmış somon içlikli, wasabi mayonezi ilə servis edilən isti roll.',
-      price: 8,
-      weight: '8 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts4',
+      name: 'Çay Seti — Türk Paxlavası',
+      desc: 'Çay, türk paxlavası, mürəbbə',
+      price: 19,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'r5',
-      name: 'Baked Roll',
-      desc: 'Fırında bişirilmiş, kremli pendir sousu ilə örtülmüş xüsusi Katana rollları.',
-      price: 9,
-      weight: '8 əd.',
-      img: 'images/gallery1.jpg'
+      id: 'ts5',
+      name: 'Çay Seti — Lokumlu',
+      desc: 'Çay, qaymaqlı lokum, şokolad, rulet',
+      price: 23,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'r6',
-      name: 'Spicy Tuna Roll',
-      desc: 'Ədviyyatlı ton balığı, xiyar, sriracha mayonezi ilə hazırlanmış qızğın roll.',
-      price: 9,
-      weight: '8 əd.',
-      img: 'images/set-n3.jpg'
+      id: 'ts6',
+      name: 'Çay Seti — Mürəbbə-Rulet',
+      desc: 'Çay, mürəbbə, şokolad, rulet',
+      price: 23,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'r7',
-      name: 'Dragon Roll',
-      desc: 'Karides tempura, avokado, unagi sousu ilə hazırlanmış vizual cəhətdən möhtəşəm roll.',
-      price: 11,
-      weight: '8 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts7',
+      name: 'Çay Seti — Lokum-Paxlava',
+      desc: 'Çay, mürəbbə, rulet, qaymaqlı lokum, paxlava',
+      price: 25,
+      weight: '1 nəfərlik',
+      img: MENU_IMG,
+      badge: 'Populyar'
     },
     {
-      id: 'r8',
-      name: 'Rainbow Roll',
-      desc: 'Krab, avokado California rollu üzərinə somon, ton balığı, karides diləmləri ilə.',
-      price: 12,
-      weight: '8 əd.',
-      img: 'images/gallery1.jpg'
-    }
-  ],
-  nigiri: [
-    {
-      id: 'n1',
-      name: 'Somon Nigiri',
-      desc: 'Təzə Atlantik somonundan hazırlanmış, əl ilə yoğurulmuş pirinc üzərində nigiri.',
-      price: 5,
-      weight: '2 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts8',
+      name: 'Çay Seti — Quru Meyvəli',
+      desc: 'Çay, quru meyvə assortisi, rulet',
+      price: 25,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'n2',
-      name: 'Ton Balığı Nigiri',
-      desc: 'Premium Bluefin ton balığından hazırlanmış, xüsusi mari sousu ilə servis.',
-      price: 6,
-      weight: '2 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts9',
+      name: 'Çay Seti — Oreo',
+      desc: 'Çay, quru meyvə assortisi, Oreo',
+      price: 27,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'n3',
-      name: 'Karides Nigiri',
-      desc: 'Bişirilmiş böyük karides, pirinc üzərində incə nori ilə bağlanmış nigiri.',
-      price: 5,
-      weight: '2 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts10',
+      name: 'Çay Seti — Şokoladlı-Meyvəli',
+      desc: 'Çay, şokolad, quru meyvə assortisi',
+      price: 27,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'n4',
-      name: 'Unagi Nigiri',
-      desc: 'Şirin-şor teriyaki sousu ilə şüyüdlənmiş tərəvəz balığı (unagi) nigiris.',
-      price: 7,
-      weight: '2 əd.',
-      img: 'images/menu-hero.jpg'
-    }
-  ],
-  maki: [
-    {
-      id: 'm1',
-      name: 'Maki Salmon',
-      desc: 'Təzə somon və nori dərinliyindən hazırlanmış sadə, lakin dadlı klassik maki rollları.',
-      price: 5,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts11',
+      name: 'Çay Seti — Ləbləbili',
+      desc: 'Çay, mürəbbə, ləbləbi assortisi',
+      price: 30,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     },
     {
-      id: 'm2',
-      name: 'Maki Ton Balığı',
-      desc: 'Premium ton balığı ilə hazırlanmış ənənəvi Yapon maki rollları.',
-      price: 5,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
+      id: 'ts12',
+      name: 'Çay Seti — Premium',
+      desc: 'Çay, qaymaqlı lokum, şokolad, quru meyvə assortisi',
+      price: 33,
+      weight: '1 nəfərlik',
+      img: MENU_IMG,
+      badge: 'Premium'
     },
     {
-      id: 'm3',
-      name: 'Maki Xiyar',
-      desc: 'Kappa maki — vegeterian seçimi, təzə xiyar ilə hazırlanmış yüngül maki rollları.',
-      price: 4,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
-    },
-    {
-      id: 'm4',
-      name: 'Maki Avokado',
-      desc: 'Kremli avokado ilə hazırlanmış bitki əsaslı yüngül maki rollları.',
-      price: 4,
-      weight: '10 əd.',
-      img: 'images/menu-hero.jpg'
-    }
-  ],
-  drinks: [
-    {
-      id: 'd1',
-      name: 'Coca-Cola',
-      desc: 'Klassik Coca-Cola — suşi ilə mükəmməl cütlük.',
-      price: 2,
-      weight: '0.33L',
-      img: 'images/set-n1.jpg'
-    },
-    {
-      id: 'd2',
-      name: 'Coca-Cola 1L',
-      desc: 'Böyük Coca-Cola, setlər üçün ideal seçim.',
-      price: 4,
-      weight: '1L',
-      img: 'images/set-n1.jpg'
-    },
-    {
-      id: 'd3',
-      name: 'Yaşıl Çay',
-      desc: 'Ənənəvi Yapon yaşıl çayı — suşi ilə klassik kombinasiya.',
-      price: 3,
-      weight: '400ml',
-      img: 'images/menu-hero.jpg'
-    },
-    {
-      id: 'd4',
-      name: 'Miso Şorba',
-      desc: 'Ənənəvi Yapon miso şorbasıı, tofu və dəniz yosunu ilə.',
-      price: 4,
-      weight: '350ml',
-      img: 'images/menu-hero.jpg'
+      id: 'ts13',
+      name: 'Çay Seti — Grand',
+      desc: 'Çay, ləbləbi assortisi, quru meyvə assortisi',
+      price: 34,
+      weight: '1 nəfərlik',
+      img: MENU_IMG
     }
   ]
 };
 
 const faqData = [
   {
-    q: 'Çatdırılma müddəti nə qədərdir?',
-    a: 'Bakı daxilindəki sifarişlər üçün ortalama çatdırılma müddəti 30-60 dəqiqədir. Sifariş verildikdən sonra kuryerimiz sizinlə əlaqə saxlayır.'
+    q: 'Rezervasiya necə edilir?',
+    a: 'Rezervasiya üçün WhatsApp vasitəsilə bizimlə əlaqə saxlaya və ya saytdakı Rezervasiya formasından istifadə edə bilərsiniz. Masa saxlamaq tamamilə pulsuzdur.'
   },
   {
     q: 'Minimum sifariş məbləği nədir?',
-    a: 'Minimum sifariş məbləği 10 AZN-dir. Çatdırılma xidmətimiz pulsuzdur (müəyyən rayonlar üçün şərtlər tətbiq oluna bilər).'
+    a: 'Minimum sifariş məbləği 10 AZN-dir.'
   },
   {
     q: 'Rezervasiya üçün depozit tələb olunurmu?',
-    a: 'Xeyr, rezervasiya tamamilə pulsuzdur. Masa saxlamaq üçün heç bir ödəniş tələb edilmir. Sadəcə gəlmədiyiniz halda xəbər verməyinizi rica edirik.'
+    a: 'Xeyr, rezervasiya tamamilə pulsuzdur. Sadəcə gəlmədiyiniz halda xəbər verməyinizi rica edirik.'
   },
   {
     q: 'Allergenləri nəzərə alırsınızmı?',
-    a: 'Bəli, biz allergen məlumatlarını çox ciddi qəbul edirik. Sifarişinizi verərkən xüsusi diet tələblərinizi qeyd etdikdə aşpazımız uyğun hazırlayacaq.'
+    a: 'Bəli, biz allergen məlumatlarını çox ciddi qəbul edirik. Sifarişinizi verərkən xüsusi diet tələblərinizi qeyd edin.'
   },
   {
     q: 'Ödəniş üsulları hansılardır?',
-    a: 'Nağd pul, bank kartı (Kapital Bank, ABB, PASHA Bank), ANSAN və onlayn ödəniş sistemləri qəbul edilir.'
+    a: 'Nağd pul, bank kartı (Kapital Bank, ABB, PASHA Bank) və onlayn ödəniş sistemləri qəbul edilir.'
   },
   {
     q: 'Korporativ sifarişlər mümkündürmü?',
-    a: 'Bəli! Şirkətlər, tədbirlər və böyük qruplar üçün xüsusi korporativ menyu və endirim proqramlarımız mövcuddur. WhatsApp vasitəsilə bizimlə əlaqə saxlayın.'
-  },
-  {
-    q: 'Qablaşdırma necədir? Eco-friendlydir?',
-    a: 'Biz ekoloji cəhətdən təmiz, geri dönüşümlü qablaşdırma materiallarından istifadə edirik. Soyuducu paketlər suşini çatdırılma zamanı ən təzə vəziyyətdə saxlayır.'
+    a: 'Bəli! Şirkətlər, tədbirlər və böyük qruplar üçün xüsusi menyu və endirim proqramlarımız mövcuddur. WhatsApp vasitəsilə bizimlə əlaqə saxlayın.'
   },
   {
     q: 'Restoranın iş saatları necədir?',
-    a: 'B.E – Cümə: 10:00–23:00 | Şənbə: 10:00–24:00 | Bazar: 11:00–23:00. Çatdırılma xidməti restoran iş saatları daxilindədir.'
+    a: 'B.E – Cümə: 10:00–23:00 | Şənbə: 10:00–24:00 | Bazar: 11:00–23:00.'
+  },
+  {
+    q: 'Instagram hesabınız varmı?',
+    a: 'Bəli! Instagram-da @teamaniabaku olaraq bizi izləyə bilərsiniz.'
   }
 ];
 
 const vacanciesData = [
   {
     id: 'v1',
-    icon: '🍱',
-    title: 'Suşi Ustad (Itamae)',
+    icon: '☕',
+    title: 'Barista',
     type: 'Tam Ştat',
-    salary: '800 – 1200 AZN',
+    salary: '600 – 900 AZN',
     schedule: 'Dəyişən növbə (2/2)',
-    requirements: 'Ən az 1 il suşi hazırlama təcrübəsi, gigiyena sertifikatı',
-    desc: 'Katana mütbəxinə peşəkar suşi ustad axtarırıq. Kreativlik, dəqiqlik və komanda ruhu vacibdir.',
-    duties: 'Menyu maddələrinin hazırlanması, freshness nəzarəti, müştəri sifarişlərinin icrasını'
+    requirements: 'Ən az 1 il barista təcrübəsi, ünsiyyət bacarığı',
+    desc: 'Teamania-ya peşəkar barista axtarırıq. Kreativlik, dəqiqlik və komanda ruhu vacibdir.',
+    duties: 'Menyu içkilərinin hazırlanması, müştəri ilə ünsiyyət, kafeyi səliqəli saxlamaq'
   },
   {
     id: 'v2',
-    icon: '🛵',
-    title: 'Kuryer',
-    type: 'Yarım / Tam Ştat',
-    salary: '500 – 800 AZN + bonus',
+    icon: '🍽️',
+    title: 'Ofisiant',
+    type: 'Tam / Yarım Ştat',
+    salary: '500 – 750 AZN + çay pulu',
     schedule: 'Çevik qrafik',
-    requirements: 'Sürücülük vəsiqəsi (B kateqoriyası), Bakı ərazisinə bələdlik',
-    desc: 'Sürətli, etibarlı kuryer işə qəbul edirik. Öz nəqliyyatı olan üçün əlavə bonus nəzərdə tutulur.',
-    duties: 'Sifarişlərin vaxtında çatdırılması, müştəri ilə ünsiyyət'
+    requirements: 'Gülərüz, ünsiyyətcil, məsuliyyətli',
+    desc: 'Müştərilərimizə ən yaxşı xidmət təqdim etmək üçün ofisiant axtarırıq.',
+    duties: 'Sifarişlərin qəbulu, masa xidməti, müştəri məmnuniyyəti'
   },
   {
     id: 'v3',
@@ -280,7 +236,7 @@ const vacanciesData = [
     salary: '600 – 900 AZN',
     schedule: 'Dəyişən növbə',
     requirements: 'Kompüter savadlılığı, ünsiyyət bacarığı, 18+ yaş',
-    desc: 'Müştəri xidmətləri üzrə kassir/operator axtarırıq. Qulaqardına vurmamaq, gülərüz olmaq vacibdir.',
+    desc: 'Müştəri xidmətləri üzrə kassir/operator axtarırıq.',
     duties: 'Sifarişlərin qəbulu, ödəniş əməliyyatları, müştəri məmnuniyyəti'
   },
   {
@@ -291,8 +247,8 @@ const vacanciesData = [
     salary: '500 – 650 AZN',
     schedule: 'Günlük, 09:00–18:00',
     requirements: 'Gigiyena standartları bilikləri, fiziki hazırlıq',
-    desc: 'Mətbəx və restoran sahəsinin gigiyena standartlarına uyğun saxlanılması üçün işçi axtarırıq.',
-    duties: 'Restoran sahəsinin təmizliyi, sanitariya standartlarına riayət'
+    desc: 'Kafe sahəsinin gigiyena standartlarına uyğun saxlanılması üçün işçi axtarırıq.',
+    duties: 'Kafe sahəsinin təmizliyi, sanitariya standartlarına riayət'
   }
 ];
 
@@ -301,29 +257,21 @@ const vacanciesData = [
 function showPage(pageId) {
   const oldPage = document.getElementById('page-' + currentPage);
   if (oldPage) {
-    // Save scroll position of current page
     PAGE_SCROLL_MAP[currentPage] = window.scrollY;
     oldPage.classList.remove('active');
   }
-
   currentPage = pageId;
-
   const newPage = document.getElementById('page-' + pageId);
   if (!newPage) return;
   newPage.classList.add('active');
-
-  // Update nav active state
   document.querySelectorAll('.nav-link').forEach(link => {
     link.classList.toggle('active', link.dataset.page === pageId);
   });
-
-  // Restore scroll position for the new page
   const savedScroll = PAGE_SCROLL_MAP[pageId] || 0;
   window.scrollTo({ top: savedScroll, behavior: 'instant' });
 }
 
 function goBack() {
-  // Save current scroll
   PAGE_SCROLL_MAP[currentPage] = window.scrollY;
   showPage('home');
 }
@@ -352,7 +300,6 @@ function toggleCart() {
 function addToCart(productId) {
   const product = findProduct(productId);
   if (!product) return;
-
   const existing = cart.find(item => item.id === productId);
   if (existing) {
     existing.qty++;
@@ -408,7 +355,6 @@ function renderCart() {
   emptyEl.style.display = isEmpty ? 'flex' : 'none';
   footerEl.style.display = isEmpty ? 'none' : 'block';
 
-  // Remove old items (not the empty notice)
   const existingItems = itemsEl.querySelectorAll('.cart-item');
   existingItems.forEach(el => el.remove());
 
@@ -416,7 +362,7 @@ function renderCart() {
     const div = document.createElement('div');
     div.className = 'cart-item';
     div.innerHTML = `
-      <img class="cart-item-img" src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" onerror="this.src='images/menu-hero.jpg'" />
+      <img class="cart-item-img" src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" />
       <div class="cart-item-info">
         <div class="cart-item-name">${escHtml(item.name)}</div>
         <div class="cart-item-price">${item.price * item.qty} AZN</div>
@@ -434,15 +380,14 @@ function renderCart() {
 function bumpCartCount() {
   const el = document.getElementById('cartCount');
   el.classList.remove('bump');
-  void el.offsetWidth; // reflow
+  void el.offsetWidth;
   el.classList.add('bump');
   setTimeout(() => el.classList.remove('bump'), 300);
 }
 
 function sendOrder() {
   if (cart.length === 0) return;
-
-  let msg = '🍱 *YENİ SİFARİŞ — Sushi Katana*\n\n';
+  let msg = '☕ *YENİ SİFARİŞ — Teamania Cafe & Lounge*\n\n';
   msg += '━━━━━━━━━━━━━━━━━━━━\n';
   cart.forEach((item, idx) => {
     msg += `${idx + 1}. ${item.name}\n   ${item.qty} × ${item.price} AZN = ${item.qty * item.price} AZN\n`;
@@ -450,8 +395,7 @@ function sendOrder() {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   msg += '━━━━━━━━━━━━━━━━━━━━\n';
   msg += `💰 *CƏMİ: ${total} AZN*\n\n`;
-  msg += '📍 Çatdırılma ünvanınızı yazın.';
-
+  msg += '📍 Ünvanınızı yazın.';
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank', 'noopener,noreferrer');
 }
@@ -471,13 +415,13 @@ function renderMenuGrids() {
       card.setAttribute('aria-label', item.name);
 
       const badgeHtml = item.badge
-        ? `<div style="position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;z-index:1;">${escHtml(item.badge)}</div>`
+        ? `<div class="menu-card-badge">${escHtml(item.badge)}</div>`
         : '';
 
       card.innerHTML = `
         <div class="menu-card-img">
           ${badgeHtml}
-          <img src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" onerror="this.src='images/menu-hero.jpg'" />
+          <img src="${item.img}" alt="${escHtml(item.name)}" loading="lazy" />
         </div>
         <div class="menu-card-body">
           <div class="menu-card-name">${escHtml(item.name)}</div>
@@ -532,7 +476,7 @@ function closeProductModalBtn() {
 
 function renderFaq() {
   const list = document.getElementById('faqList');
-  faqData.forEach((item, i) => {
+  faqData.forEach(item => {
     const el = document.createElement('div');
     el.className = 'faq-item';
     el.innerHTML = `
@@ -551,7 +495,6 @@ function renderFaq() {
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   const isOpen = item.classList.contains('open');
-  // Close all
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
@@ -587,7 +530,6 @@ function openVacancyModal(v) {
   document.getElementById('vacancyModalIcon').textContent = v.icon;
   document.getElementById('vacancyModalTitle').textContent = v.title;
   document.getElementById('vacancyModalType').textContent = v.type;
-
   const detailsEl = document.getElementById('vacancyModalDetails');
   detailsEl.innerHTML = `
     <div class="vacancy-detail-row"><span class="vacancy-detail-label">💰 Maaş:</span><span class="vacancy-detail-value">${escHtml(v.salary)}</span></div>
@@ -595,7 +537,6 @@ function openVacancyModal(v) {
     <div class="vacancy-detail-row"><span class="vacancy-detail-label">📋 Tələblər:</span><span class="vacancy-detail-value">${escHtml(v.requirements)}</span></div>
     <div class="vacancy-detail-row"><span class="vacancy-detail-label">📝 Vəzifələr:</span><span class="vacancy-detail-value">${escHtml(v.duties)}</span></div>
   `;
-
   document.getElementById('vacancyModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -611,7 +552,7 @@ function closeVacancyModalBtn() {
 
 function applyVacancy() {
   if (!currentVacancy) return;
-  const msg = `👋 *Vakansiyaya Müraciət — Sushi Katana*\n\n🔹 *Vəzifə:* ${currentVacancy.title}\n🔹 *İş rejimi:* ${currentVacancy.type}\n\nSalam! Bu vakansiya ilə maraqlanıram. Əlaqə saxlamaq istəyirəm.`;
+  const msg = `👋 *Vakansiyaya Müraciət — Teamania Cafe & Lounge*\n\n🔹 *Vəzifə:* ${currentVacancy.title}\n🔹 *İş rejimi:* ${currentVacancy.type}\n\nSalam! Bu vakansiya ilə maraqlanıram. Əlaqə saxlamaq istəyirəm.`;
   window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
 }
 
@@ -619,12 +560,12 @@ function applyVacancy() {
 
 function submitReservation(e) {
   e.preventDefault();
-  const name    = document.getElementById('resName').value.trim();
-  const phone   = document.getElementById('resPhone').value.trim();
-  const date    = document.getElementById('resDate').value;
-  const time    = document.getElementById('resTime').value;
-  const guests  = document.getElementById('resGuests').value;
-  const note    = document.getElementById('resNote').value.trim();
+  const name   = document.getElementById('resName').value.trim();
+  const phone  = document.getElementById('resPhone').value.trim();
+  const date   = document.getElementById('resDate').value;
+  const time   = document.getElementById('resTime').value;
+  const guests = document.getElementById('resGuests').value;
+  const note   = document.getElementById('resNote').value.trim();
 
   if (!name || !phone || !date || !time || !guests) {
     showToast('Zəhmət olmasa bütün məcburi xanaları doldurun!');
@@ -632,7 +573,7 @@ function submitReservation(e) {
   }
 
   const formattedDate = formatDate(date);
-  let msg = `📅 *REZERVASIYA — Sushi Katana*\n\n`;
+  let msg = `📅 *REZERVASIYA — Teamania Cafe & Lounge*\n\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `👤 *Ad, Soyad:* ${name}\n`;
   msg += `📞 *Telefon:* ${phone}\n`;
@@ -719,7 +660,6 @@ document.addEventListener('DOMContentLoaded', function() {
   renderVacancies();
   renderCart();
 
-  // Set min date for reservation to today
   const today = new Date().toISOString().split('T')[0];
   const resDate = document.getElementById('resDate');
   if (resDate) resDate.min = today;
